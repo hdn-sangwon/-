@@ -47,6 +47,18 @@
     font-size: 13px;
     min-width: 50px;
   }
+#month-filter,
+#week-filter {
+  font-size: 13px;
+  padding: 5px 8px;
+  font-family: sans-serif;
+}
+#search-issue,
+#search-device {
+  width: 200px;   
+  padding: 6px;
+  font-size: 14px;
+}
   </style>
 </head>
 <body>
@@ -54,16 +66,25 @@
 <div id="form-wrapper">
   <h2>문의사항 등록</h2>
   <form id="cs-form">
-    <input type="text" id="req-company" placeholder="요청 회사" required />
-    <input type="text" id="req-name" placeholder="요청자명" required />
-    <input type="text" id="req-phone" placeholder="요청자 전화번호" required />
+<fieldset style="border: 1px solid #aaa; padding: 5px; margin-bottom: 5px;">
+  <legend>요청자 정보</legend>
+  <input type="text" id="req-company" placeholder="요청 회사" required />
+  <input type="text" id="req-name" placeholder="요청자명" required />
+  <input type="text" id="req-phone" placeholder="요청자 전화번호" required />
+</fieldset>
+<fieldset style="border: 1px solid #aaa; padding: 5px; margin-bottom: 5px;">
+  <legend>고객사 정보</legend>
     <input type="text" id="client-company" placeholder="고객사" required />
     <input type="text" id="client-name" placeholder="고객명" required />
     <input type="text" id="client-phone" placeholder="고객사 전화번호" required />
+</fieldset>
+<fieldset style="border: 1px solid #aaa; padding: 5px; margin-bottom: 5px;">
+  <legend>이슈 정보</legend>
     <input type="text" id="device" placeholder="장비명" required />
     <input type="text" id="issue" placeholder="이슈 내용" required />
     <input type="text" id="response" placeholder="대응 내용" required />
     <select id="status" required>
+</fieldset>
       <option value="진행중">진행중</option>
       <option value="완료">완료</option>
     </select>
@@ -75,25 +96,27 @@
 <div id="main-wrapper" style="border: 5px solid #999; border-radius: 10px; padding: 15px; background-color: #f9f9f9; margin-bottom: 20px;">
 <div id="filter-wrapper">
   
-<label for="month-filter">월별 조회:</label>
-<label for="week-filter" style="margin-left: 20px;">주별 조회:</label>
-<input type="week" id="week-filter" onchange="filterTable()" />
+<label for="month-filter">월별 조회: 
+  <select id="month-filter" onchange="filterTable()">
+    <option value="">전체</option>
+    <option value="2025-01">2025년 1월</option>
+    <option value="2025-02">2025년 2월</option>
+    <option value="2025-03">2025년 3월</option>
+    <option value="2025-04">2025년 4월</option>
+    <option value="2025-05">2025년 5월</option>
+    <option value="2025-06">2025년 6월</option>
+    <option value="2025-07">2025년 7월</option>
+    <option value="2025-08">2025년 8월</option>
+    <option value="2025-09">2025년 9월</option>
+    <option value="2025-10">2025년 10월</option>
+    <option value="2025-11">2025년 11월</option>
+    <option value="2025-12">2025년 12월</option>
+  </select>
+</label>
 
-<select id="month-filter" onchange="filterTable()">
-  <option value="">전체</option>
-  <option value="2025-01">2025년 1월</option>
-  <option value="2025-02">2025년 2월</option>
-  <option value="2025-03">2025년 3월</option>
-  <option value="2025-04">2025년 4월</option>
-  <option value="2025-05">2025년 5월</option>
-  <option value="2025-06">2025년 6월</option>
-  <option value="2025-07">2025년 7월</option>
-  <option value="2025-08">2025년 8월</option>
-  <option value="2025-09">2025년 9월</option>
-  <option value="2025-10">2025년 10월</option>
-  <option value="2025-11">2025년 11월</option>
-  <option value="2025-12">2025년 12월</option>
-</select>
+<label for="week-filter" style="margin-left: 20px;">주별 조회: 
+  <input type="week" id="week-filter" onchange="filterTable()" />
+</label>
 
   <h2>📋 문의사항 내역</h2>
   <div id="filter-section">
@@ -118,7 +141,7 @@
         <th>장비명</th>
         <th>이슈 내용</th>
         <th>대응 내용</th>
-        <th>첨부파일</th>
+        <th>Tech-support</th>
         <th>처리 여부</th>
         <th>삭제</th>
       </tr>
