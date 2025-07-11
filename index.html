@@ -196,7 +196,7 @@ form.addEventListener('submit', function (e) {
     <td contenteditable="true">${issue}</td>
     <td contenteditable="true">${response}</td>
     
-<td contenteditable="true">${fileName || ""}</td>
+<td>${fileName ? `<a href="${fileURL}" download="${fileName}">${fileName}</a>` : ""}</td>
 <td>
   <select onchange="updateStatus(this)">
     <option value="진행중" ${status === '진행중' ? 'selected' : ''}>진행중</option>
