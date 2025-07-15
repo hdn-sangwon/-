@@ -1,155 +1,245 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <title>TC 고객 문의사항</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      margin: 20px;
-    }
-    form input, form select {
-      margin: 5px;
-      padding: 5px;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 15px;
-    }
-    th, td {
-      border: 1px solid #ccc;
-      padding: 10px;
-      text-align: center;
-    }
-    th {
-      background-color: #f3f3f3;
-    }
-    .status-done { background-color: #c8f7c5; }
-    .status-progress { background-color: #ffeaa7; }
-    button {
-      padding: 5px 10px;
-    }
-    #form-wrapper {
-      border: 5px solid #999;
-      border-radius: 10px;
-      padding: 15px;
-      background-color: #f9f9f9;
-      margin-bottom: 20px;
-    }
+<meta charset="utf-8"/>
+<title>TC 고객 문의사항</title>
+<style>
+  :root {
+    --bg-main: #007BFF;
+    --bg-wrapper: #cce7ff;
+    --bg-header: #b3daff;
+    --bg-table-head: #0056b3;
+    --bg-table-body: #cce7ff;
+    --font-color-header: #000000;
+    --font-color-light: #ffffff;
+    --border-color: #333333;
+    --button-bg: #003f7f;
+    --button-bg-hover: #002b5c;
+  }
 
-#filter-wrapper {
-      padding: 0;
-      margin-bottom: 10px;
-    }
+  body {
+    background-color: var(--bg-main);
+    font-family: sans-serif;
+    margin: 15px;
+  }
+
+  #form-wrapper,
+  #main-wrapper {
+    background-color: var(--bg-wrapper);
+    border: 3px solid var(--border-color);
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 15px;
+  }
+
+  #form-wrapper h2,
+  #main-wrapper h2 {
+    background-color: var(--bg-header);
+    padding: 5px 10px;
+    border-radius: 6px;
+    color: var(--font-color-header);
+  }
+
+  form input,
+  form select,
+  form button {
+    padding: 5px;
+    margin: 5px 0;
+    font-size: 14px;
+  }
+
+  fieldset {
+    border: 1px solid var(--border-color);
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+
+  legend {
+    font-weight: bold;
+  }
+
+  .form-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .form-section input,
+  .form-section select,
+  .form-section button {
+    flex: 1 1 30%;
+    min-width: 100px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+  }
+
+  th, td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+  }
+
+  th {
+    background-color: var(--bg-table-head);
+    color: var(--font-color-light);
+  }
+
+  #filter-wrapper {
+    background-color: var(--bg-wrapper);
+    padding: 10px;
+    border-radius: 6px;
+  }
+
+  #cs-table {
+    background-color: var(--bg-table-body);
+  }
+
+  #cs-table thead {
+    background-color: var(--bg-header);
+  }
+
+  .status-done {
+    background-color: #ccffcc;
+  }
+
+  .status-progress {
+    background-color: #fffbe6;
+  }
+
+  button {
+    background-color: var(--button-bg);
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background-color: var(--button-bg-hover);
+  }
+
+  #month-filter,
+  #week-filter,
+  #search-issue,
+  #search-device {
+    font-size: 13px;
+    padding: 5px 8px;
+    font-family: sans-serif;
+  }
+
+  #search-issue,
+  #search-device {
+    width: 200px;
+  }
+
   td select {
     padding: 5px 8px;
     font-size: 13px;
     min-width: 50px;
   }
-#month-filter,
-#week-filter {
-  font-size: 13px;
-  padding: 5px 8px;
-  font-family: sans-serif;
+
+#main-wrapper {
+  background-color: var(--bg-wrapper) !important;
+  padding: 20px;
+  margin: 0;
+  border-radius: 10px;
+  box-shadow: none;
 }
-#search-issue,
-#search-device {
-  width: 200px;   
-  padding: 6px;
-  font-size: 14px;
+
+#main-wrapper > * {
+  background-color: var(--bg-wrapper) !important;
+  border-radius: 0;
+  margin: 0;
+  padding: 0;
+  box-shadow: none;
 }
-  </style>
+</style>
 </head>
 <body>
-
 <div id="form-wrapper">
-  <h2>문의사항 등록</h2>
-  <form id="cs-form">
-<fieldset style="border: 1px solid #aaa; padding: 5px; margin-bottom: 5px;">
-  <legend>요청자 정보</legend>
-  <input type="text" id="req-company" placeholder="요청 회사" required />
-  <input type="text" id="req-name" placeholder="요청자명" required />
-  <input type="text" id="req-phone" placeholder="요청자 전화번호" required />
+<h2>✒️문의사항 등록</h2>
+<form id="cs-form">
+<fieldset style="border: 1px solid #aaa; padding: 1px; margin-bottom: 0px;">
+<legend>요청자 정보</legend>
+<input id="req-company" placeholder="요청 회사" type="text"/>
+<input id="req-name" placeholder="요청자명" type="text"/>
+<input id="req-phone" placeholder="요청자 전화번호" type="text"/>
 </fieldset>
-<fieldset style="border: 1px solid #aaa; padding: 5px; margin-bottom: 5px;">
-  <legend>고객사 정보</legend>
-    <input type="text" id="client-company" placeholder="고객사" required />
-    <input type="text" id="client-name" placeholder="고객명" required />
-    <input type="text" id="client-phone" placeholder="고객사 전화번호" required />
+<fieldset style="border: 1px solid #aaa; padding: 1px; margin-bottom: 0px;">
+<legend>고객사 정보</legend>
+<input id="client-company" placeholder="고객사" type="text"/>
+<input id="client-name" placeholder="고객명" type="text"/>
+<input id="client-phone" placeholder="고객사 전화번호" type="text"/>
 </fieldset>
-<fieldset style="border: 1px solid #aaa; padding: 5px; margin-bottom: 5px;">
-  <legend>이슈 정보</legend>
-    <input type="text" id="device" placeholder="장비명" required />
-    <input type="text" id="issue" placeholder="이슈 내용" required />
-    <input type="text" id="response" placeholder="대응 내용" required />
-    <select id="status" required>
+<fieldset style="border: 1px solid #aaa; padding: 1px; margin-bottom: 0px;">
+<legend>이슈 정보</legend>
+<input id="device" placeholder="장비명" type="text"/>
+<input id="issue" placeholder="이슈 내용" type="text"/>
+<input id="response" placeholder="대응 내용" type="text"/>
+<select id="status"><option value="진행중">진행중</option><option value="완료">완료</option></select>
+<input id="input-date" type="date"/>
+<input accept=".txt" id="attachment" type="file"/>
+<button type="submit">등록</button>
 </fieldset>
-      <option value="진행중">진행중</option>
-      <option value="완료">완료</option>
-    </select>
-    <input type="file" id="attachment" accept=".txt" />
-    <button type="submit">등록</button>
-  </form>
+</form>
 </div>
-
-<div id="main-wrapper" style="border: 5px solid #999; border-radius: 10px; padding: 15px; background-color: #f9f9f9; margin-bottom: 20px;">
+<div id="main-wrapper">
 <div id="filter-wrapper">
-  
 <label for="month-filter">월별 조회: 
   <select id="month-filter" onchange="filterTable()">
-    <option value="">전체</option>
-    <option value="2025-01">2025년 1월</option>
-    <option value="2025-02">2025년 2월</option>
-    <option value="2025-03">2025년 3월</option>
-    <option value="2025-04">2025년 4월</option>
-    <option value="2025-05">2025년 5월</option>
-    <option value="2025-06">2025년 6월</option>
-    <option value="2025-07">2025년 7월</option>
-    <option value="2025-08">2025년 8월</option>
-    <option value="2025-09">2025년 9월</option>
-    <option value="2025-10">2025년 10월</option>
-    <option value="2025-11">2025년 11월</option>
-    <option value="2025-12">2025년 12월</option>
-  </select>
+<option value="">전체</option>
+<option value="2025-01">2025년 1월</option>
+<option value="2025-02">2025년 2월</option>
+<option value="2025-03">2025년 3월</option>
+<option value="2025-04">2025년 4월</option>
+<option value="2025-05">2025년 5월</option>
+<option value="2025-06">2025년 6월</option>
+<option value="2025-07">2025년 7월</option>
+<option value="2025-08">2025년 8월</option>
+<option value="2025-09">2025년 9월</option>
+<option value="2025-10">2025년 10월</option>
+<option value="2025-11">2025년 11월</option>
+<option value="2025-12">2025년 12월</option>
+</select>
 </label>
-
 <label for="week-filter" style="margin-left: 20px;">주별 조회: 
-  <input type="week" id="week-filter" onchange="filterTable()" />
+  <input id="week-filter" onchange="filterTable()" type="week"/>
 </label>
-
-  <h2>📋 문의사항 내역</h2>
-  <div id="filter-section">
-    <input type="text" id="search-issue" placeholder="이슈 내용 검색" />
-    <input type="text" id="search-device" placeholder="장비명 검색" />
-    <button onclick="filterTable()">🔍 검색</button>
-    <label>시작일: <input type="date" id="start-date"></label>
-    <label>종료일: <input type="date" id="end-date"></label>
-    <button onclick="downloadExcel()">📤 Excel 다운로드</button>
-  </div>
-
-  <table id="cs-table">
-    <thead>
-      <tr>
-        <th>날짜</th>
-        <th>요청 회사</th>
-        <th>요청자명</th>
-        <th>요청자 전화번호</th>
-        <th>고객사</th>
-        <th>고객명</th>
-        <th>고객사 전화번호</th>
-        <th>장비명</th>
-        <th>이슈 내용</th>
-        <th>대응 내용</th>
-        <th>Tech-support</th>
-        <th>처리 여부</th>
-        <th>삭제</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+<h2>📋 문의사항 내역</h2>
+<div id="filter-section">
+<input id="search-issue" placeholder="이슈 내용 검색" type="text"/>
+<input id="search-device" placeholder="장비명 검색" type="text"/>
+<button onclick="filterTable()">🔍 검색</button>
+<label>시작일: <input id="start-date" type="date"/></label>
+<label>종료일: <input id="end-date" type="date"/></label>
+<button onclick="downloadExcel()">📤 Excel 다운로드</button>
 </div>
-
+<table id="cs-table">
+<thead>
+<tr>
+<th>날짜</th>
+<th>요청 회사</th>
+<th>요청자명</th>
+<th>요청자 전화번호</th>
+<th>고객사</th>
+<th>고객명</th>
+<th>고객사 전화번호</th>
+<th>장비명</th>
+<th>이슈 내용</th>
+<th>대응 내용</th>
+<th>Tech-support</th>
+<th>처리 여부</th>
+<th>삭제</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+</div>
 <script>
 const form = document.getElementById('cs-form');
 const tableBody = document.querySelector('#cs-table tbody');
@@ -158,86 +248,44 @@ const startDateInput = document.getElementById('start-date');
 const endDateInput = document.getElementById('end-date');
 const LOCAL_KEY = "cs_data";
 
+// [수정됨] 1. 새 항목 등록 기능 (파일 처리 로직 포함)
 form.addEventListener('submit', function (e) {
-  const fileInput = document.getElementById("attachment");
-  const file = fileInput.files[0];
-  let fileName = "";
-  let fileURL = "";
-  if (file) {
-    fileName = file.name;
-    fileURL = URL.createObjectURL(file);
-  }
-
   e.preventDefault();
 
-  const reqCompany = document.getElementById('req-company').value;
-  const reqName = document.getElementById('req-name').value;
-  const reqPhone = document.getElementById('req-phone').value;
-  const cliCompany = document.getElementById('client-company').value;
-  const cliName = document.getElementById('client-name').value;
-  const cliPhone = document.getElementById('client-phone').value;
-  const device = document.getElementById('device').value;
-  const issue = document.getElementById('issue').value;
-  const response = document.getElementById('response').value;
+  const fileInput = document.getElementById("attachment");
+  const file = fileInput.files[0];
+  let fileName = file ? file.name : "없음"; // 파일이 있으면 파일명, 없으면 빈 문자열
+
+  const reqCompany = document.getElementById('req-company').value || '-';
+  const reqName = document.getElementById('req-name').value || '-';
+  const reqPhone = document.getElementById('req-phone').value || '-';
+  const cliCompany = document.getElementById('client-company').value || '-';
+  const cliName = document.getElementById('client-name').value || '-';
+  const cliPhone = document.getElementById('client-phone').value || '-';
+  const device = document.getElementById('device').value || '-';
+  const issue = document.getElementById('issue').value || '-';
+  const response = document.getElementById('response').value || '-';
   const status = document.getElementById('status').value;
-  const date = new Date().toISOString().split("T")[0];
+  const dateInput = document.getElementById('input-date').value;
+  const date = dateInput ? dateInput : new Date().toISOString().split('T')[0];
 
-  const newRow = document.createElement('tr');
-  newRow.className = status === "완료" ? "status-done" : "status-progress";
-  newRow.innerHTML = `
-    <td>${date}</td>
-    <td contenteditable="true">${reqCompany}</td>
-    <td contenteditable="true">${reqName}</td>
-    <td contenteditable="true">${reqPhone}</td>
-    <td contenteditable="true">${cliCompany}</td>
-    <td contenteditable="true">${cliName}</td>
-    <td contenteditable="true">${cliPhone}</td>
-    <td contenteditable="true">${device}</td>
-    <td contenteditable="true">${issue}</td>
-    <td contenteditable="true">${response}</td>
-    
-<td>${fileName ? `<a href="${fileURL}" download="${fileName}">${fileName}</a>` : ""}</td>
-<td>
-  <select onchange="updateStatus(this)">
-    <option value="진행중" ${status === '진행중' ? 'selected' : ''}>진행중</option>
-    <option value="완료" ${status === '완료' ? 'selected' : ''}>완료</option>
-  </select>
-</td>
+  const newRowData = [
+      date, reqCompany, reqName, reqPhone,
+      cliCompany, cliName, cliPhone,
+      device, issue, response, fileName, status
+  ];
 
-    <td><button onclick="deleteRow(this)">삭제</button></td>
-  `;
-  tableBody.appendChild(newRow);
+  createRow(newRowData); // 행 생성 함수 호출
   saveData();
   form.reset();
   filterTable();
 });
 
-
-function updateStatus(select) {
-  const row = select.closest("tr");
-  row.className = select.value === "완료" ? "status-done" : "status-progress";
-  saveData();
-}
-
-function saveData() {
-
-  const rows = Array.from(tableBody.children).map(row => {
-    return Array.from(row.cells).slice(0, 12).map((cell, idx) => {
-      if (idx === 12) {
-        const select = cell.querySelector('select');
-        return select ? select.value : cell.textContent;
-      }
-      return cell.textContent;
-    });
-  });
-  localStorage.setItem(LOCAL_KEY, JSON.stringify(rows));
-}
-
-function loadData() {
-  const data = JSON.parse(localStorage.getItem(LOCAL_KEY) || "[]");
-  data.forEach(entry => {
+// [수정됨] 2. 표에 새로운 행을 생성하고 추가하는 함수
+function createRow(entry) {
+    const status = entry[11]; // 데이터 배열에서 상태 값 가져오기
     const newRow = document.createElement('tr');
-    newRow.className = entry[10] === "완료" ? "status-done" : "status-progress";
+    newRow.className = status === "완료" ? "status-done" : "status-progress";
     newRow.innerHTML = `
       <td>${entry[0]}</td>
       <td contenteditable="true">${entry[1]}</td>
@@ -249,77 +297,107 @@ function loadData() {
       <td contenteditable="true">${entry[7]}</td>
       <td contenteditable="true">${entry[8]}</td>
       <td contenteditable="true">${entry[9]}</td>
-      
-<td contenteditable="true">${entry[11]}</td>
-<td>
-  <select onchange="updateStatus(this)">
-    <option value="진행중" ${entry[12] === '진행중' ? 'selected' : ''}>진행중</option>
-    <option value="완료" ${entry[12] === '완료' ? 'selected' : ''}>완료</option>
-  </select>
-</td>
-
+      <td contenteditable="true">${entry[10]}</td>
+      <td>
+        <select onchange="updateStatus(this)">
+          <option value="진행중" ${status === '진행중' ? 'selected' : ''}>진행중</option>
+          <option value="완료" ${status === '완료' ? 'selected' : ''}>완료</option>
+        </select>
+      </td>
       <td><button onclick="deleteRow(this)">삭제</button></td>
     `;
     tableBody.appendChild(newRow);
-  });
 }
 
+// [수정됨] 3. 상태 변경 시 클래스 변경 및 데이터 저장
+function updateStatus(selectElement) {
+  const row = selectElement.closest("tr");
+  row.className = selectElement.value === "완료" ? "status-done" : "status-progress";
+  saveData(); // 상태 변경 후 즉시 저장
+}
+
+// [수정됨] 4. 테이블의 모든 데이터를 로컬 스토리지에 저장하는 함수
+function saveData() {
+  const rows = Array.from(tableBody.children).map(row => {
+    const statusSelect = row.cells[11].querySelector('select');
+    return [
+      row.cells[0].textContent, // 날짜
+      row.cells[1].textContent, // 요청 회사
+      row.cells[2].textContent, // 요청자명
+      row.cells[3].textContent, // 요청자 전화번호
+      row.cells[4].textContent, // 고객사
+      row.cells[5].textContent, // 고객명
+      row.cells[6].textContent, // 고객사 전화번호
+      row.cells[7].textContent, // 장비명
+      row.cells[8].textContent, // 이슈 내용
+      row.cells[9].textContent, // 대응 내용
+      row.cells[10].textContent, // Tech-support (파일명)
+      statusSelect ? statusSelect.value : '진행중' // 처리 여부
+    ];
+  });
+  localStorage.setItem(LOCAL_KEY, JSON.stringify(rows));
+}
+
+// [수정됨] 5. 로컬 스토리지에서 데이터를 불러와 테이블을 채우는 함수
+function loadData() {
+  const data = JSON.parse(localStorage.getItem(LOCAL_KEY) || "[]");
+  data.forEach(entry => createRow(entry)); // 각 데이터에 대해 행 생성 함수 호출
+  filterTable(); // 데이터 로드 후 필터 적용
+}
+
+// [정상 작동] 6. 필터링 기능 (수정 필요 없음)
 function filterTable() {
   const search = searchInput.value.toLowerCase().trim();
   const searchDevice = document.getElementById('search-device').value.toLowerCase().trim();
   const start = startDateInput.value;
   const end = endDateInput.value;
+  const month = document.getElementById('month-filter').value;
+  const week = document.getElementById('week-filter').value;
+
   Array.from(tableBody.rows).forEach(row => {
     const date = row.cells[0].textContent;
     const device = row.cells[7].textContent.toLowerCase();
     const issue = row.cells[8].textContent.toLowerCase();
+    
     const matchSearch = issue.includes(search);
     const matchDevice = device.includes(searchDevice);
     const matchStart = !start || date >= start;
     const matchEnd = !end || date <= end;
-    const month = document.getElementById('month-filter').value;
     const matchMonth = !month || date.startsWith(month);
 
-    const week = document.getElementById('week-filter').value;
     let matchWeek = true;
     if (week) {
-      const [wYear, wWeek] = week.split("-W");
+      const [wYear, wWeekStr] = week.split("-W");
+      const wWeek = parseInt(wWeekStr);
       const d = new Date(date);
       const dYear = d.getFullYear();
       const jan1 = new Date(dYear, 0, 1);
       const days = Math.floor((d - jan1) / (24 * 60 * 60 * 1000));
       const dWeek = Math.ceil((days + jan1.getDay() + 1) / 7);
-      matchWeek = (parseInt(wYear) === dYear && parseInt(wWeek) === dWeek);
+      matchWeek = (parseInt(wYear) === dYear && wWeek === dWeek);
     }
 
     row.style.display = matchSearch && matchDevice && matchStart && matchEnd && matchMonth && matchWeek ? "" : "none";
   });
 }
 
+// [정상 작동] 7. 행 삭제 기능
 function deleteRow(button) {
   const row = button.closest('tr');
   row.remove();
   saveData();
 }
 
+// [수정됨] 8. 인라인 편집 시 자동 저장을 위한 이벤트 리스너
 tableBody.addEventListener("input", function(e) {
-  const cell = e.target;
-  const row = cell.parentElement;
-  const statusCellIndex = 10;
-  if (row.cells[statusCellIndex] === cell) {
-    const status = cell.textContent.trim();
-    if (status === "완료") {
-      row.className = "status-done";
-    } else {
-      row.className = "status-progress";
-    }
+  // contenteditable 속성이 있는 셀에서 'input' 이벤트가 발생하면 바로 저장
+  if (e.target.hasAttribute('contenteditable')) {
     saveData();
   }
 });
 
+// 페이지 로드 시 데이터 불러오기
 window.onload = loadData;
 </script>
-
-</body>
+</div></body>
 </html>
-</div>
